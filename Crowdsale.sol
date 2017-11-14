@@ -10,7 +10,7 @@ contract Crowdsale {
 
   mapping(uint256 => uint8) icoWeeksDiscounts; 
 
-  uint256 public preStartTime = 1510786326;
+  uint256 public preStartTime = 1510704000;
   uint256 public preEndTime = 1512086400; 
 
   bool public isICOStarted = false; 
@@ -108,7 +108,7 @@ contract Crowdsale {
     uint256 ethAmount = msg.value / 1 ether;
 
     uint8 discountPercents = getDiscount();
-    uint256 costWithDiscount = tokensPerEth.div(discountPercents).mul(100);
+    uint256 costWithDiscount = tokensPerEth.div(100 - discountPercents).mul(100);
     uint256 tokens = ethAmount.mul(costWithDiscount);
 
     weiRaised = weiRaised.add(ethAmount * 1 ether);

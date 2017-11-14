@@ -10,16 +10,17 @@ contract Crowdsale {
 
   mapping(uint256 => uint8) icoWeeksDiscounts; 
 
-  uint256 public preStartTime;
-  uint256 public preEndTime; 
+  uint256 public preStartTime = 1510786326;
+  uint256 public preEndTime = 1512086400; 
 
   bool public isICOStarted = false; 
   uint256 public icoStartTime; 
   uint256 public icoEndTime; 
 
   address public wallet;
-  uint256 public tokensPerWei; 
-  uint256 public weiRaised; 
+  uint256 public tokensPerEth = 10;
+  uint256 public weiRaised;
+  uint256 public ethRaised;
 
   event TokenPurchase(address indexed purchaser, address indexed beneficiary, uint256 value, uint256 amount);
 
@@ -28,16 +29,10 @@ contract Crowdsale {
     _;
   }
 
-  function Crowdsale(uint256 _preStartTime, uint256 _preEndTime, uint256 _tokensPerWei, address _wallet) public {
-    require(_preStartTime >= now);
-    require(_preEndTime >= _preStartTime);
-    require(_tokensPerWei > 0);
+  function Crowdsale(address _wallet) public {
     require(_wallet != address(0));
 
     token = createTokenContract();
-    preStartTime = _preStartTime;
-    preEndTime = _preEndTime;
-    tokensPerWei = _tokensPerWei;
     wallet = _wallet;
 
     initDiscounts();
@@ -108,17 +103,18 @@ contract Crowdsale {
 
   function buyTokens(address beneficiary) public validAddress(beneficiary) payable {
     require(validPurchase());
+    require(msg.value > 1 ether);
 
-    uint256 weiAmount = msg.value;
+    uint256 ethAmount = msg.value / 1 ether;
 
     uint8 discountPercents = getDiscount();
-    uint256 costWithDiscount = tokensPerWei.mul(discountPercents).div(100);
-    uint256 tokens = weiAmount.mul(costWithDiscount);
+    uint256 costWithDiscount = tokensPerEth.div(discountPercents).mul(100);
+    uint256 tokens = ethAmount.mul(costWithDiscount);
 
-    weiRaised = weiRaised.add(weiAmount);
+    weiRaised = weiRaised.add(ethAmount * 1 ether);
 
     token.transfer(beneficiary, tokens);
-    TokenPurchase(msg.sender, beneficiary, weiAmount, tokens);
+    TokenPurchase(msg.sender, beneficiary, ethAmount * 1 ether , tokens);
 
     forwardFunds();
   }

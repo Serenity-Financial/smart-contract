@@ -62,8 +62,8 @@ contract Crowdsale {
 
   function getTimeDiscount() internal returns(uint8) {
     require(isICOStarted == true);
-    require(icoStartTime > now);
-    require(icoEndTime < now);
+    require(icoStartTime < now);
+    require(icoEndTime > now);
 
     uint256 weeksPassed = (now - icoStartTime) / 7 days;
     return icoWeeksDiscounts[weeksPassed];
@@ -71,8 +71,8 @@ contract Crowdsale {
 
   function getTotalSoldDiscount() internal returns(uint8) {
     require(isICOStarted == true);
-    require(icoStartTime > now);
-    require(icoEndTime < now);
+    require(icoStartTime < now);
+    require(icoEndTime > now);
 
     uint256 totalSold = token.totalSoldTokens();
 

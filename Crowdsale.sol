@@ -17,7 +17,7 @@ contract Crowdsale {
   uint256 public icoStartTime; 
   uint256 public icoEndTime; 
 
-  address public wallet;
+  address public wallet = 0x47c8F28e6056374aBA3DF0854306c2556B104601;
   uint256 public tokensPerEth = 10;
   uint256 public weiRaised;
   uint256 public ethRaised;
@@ -29,12 +29,8 @@ contract Crowdsale {
     _;
   }
 
-  function Crowdsale(address _wallet) public {
-    require(_wallet != address(0));
-
+  function Crowdsale() public {
     token = createTokenContract();
-    wallet = _wallet;
-
     initDiscounts();
   }
 

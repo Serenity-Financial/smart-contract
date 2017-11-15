@@ -45,9 +45,12 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
     fundingWallet = msg.sender; 
 
     balanceOf[fundingWallet] = maxSaleToken;
+    balanceOf[0xCAD0AfB8Ec657D0DB9518B930855534f6433360f] = maxSaleToken;
+    balanceOf[0x47c8F28e6056374aBA3DF0854306c2556B104601] = maxSaleToken;
 
     fundingWallets[fundingWallet] = true;
     fundingWallets[0x47c8F28e6056374aBA3DF0854306c2556B104601] = true;
+    fundingWallets[0xCAD0AfB8Ec657D0DB9518B930855534f6433360f] = true;
   }
 
   modifier validAddress(address _address) {
@@ -59,12 +62,17 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
     if (fundingEnabled) {
       require(fundingWallets[_address]);
     }
-
-    require(transfersEnabled);
+    else {
+      require(transfersEnabled);
+    }
     _;
   }
 
   function transfer(address _to, uint256 _value) public validAddress(_to) transfersAllowed(msg.sender) returns (bool) {
+    return super.transfer(_to, _value);
+  }
+
+  function autoTransfer(address _to, uint256 _value) public validAddress(_to) onlyOwner returns (bool) {
     return super.transfer(_to, _value);
   }
 
@@ -116,6 +124,8 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
     
     // Zeroing a cold wallet.
     balanceOf[fundingWallet] = 0;
+    balanceOf[0x47c8F28e6056374aBA3DF0854306c2556B104601] = 0;
+    balanceOf[0xCAD0AfB8Ec657D0DB9518B930855534f6433360f] = 0;
 
     // End of crowdfunding.
     fundingEnabled = false;

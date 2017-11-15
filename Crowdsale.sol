@@ -18,7 +18,7 @@ contract Crowdsale {
   uint256 public icoEndTime; 
 
   address public wallet = 0x47c8F28e6056374aBA3DF0854306c2556B104601;
-  uint256 public tokensPerEth = 10;
+  uint256 public finneyPerToken = 100;
   uint256 public weiRaised;
   uint256 public ethRaised;
 
@@ -99,18 +99,18 @@ contract Crowdsale {
 
   function buyTokens(address beneficiary) public validAddress(beneficiary) payable {
     require(validPurchase());
-    require(msg.value > 1 ether);
 
-    uint256 ethAmount = msg.value / 1 ether;
+    uint256 finneyAmount = msg.value / 1 finney;
 
     uint8 discountPercents = getDiscount();
-    uint256 costWithDiscount = tokensPerEth.div(100 - discountPercents).mul(100);
-    uint256 tokens = ethAmount.mul(costWithDiscount);
+    uint256 tokens = finneyAmount.mul(100).div(100 - discountPercents).div(finneyPerToken);
 
-    weiRaised = weiRaised.add(ethAmount * 1 ether);
+    require(tokens > 0);
 
-    token.transfer(beneficiary, tokens);
-    TokenPurchase(msg.sender, beneficiary, ethAmount * 1 ether , tokens);
+    weiRaised = weiRaised.add(finneyAmount * 1 finney);
+    
+    token.autoTransfer(beneficiary, tokens);
+    TokenPurchase(msg.sender, beneficiary, finneyAmount * 1 finney, tokens);
 
     forwardFunds();
   }

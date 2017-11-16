@@ -104,6 +104,7 @@ contract Crowdsale {
 
     uint8 discountPercents = getDiscount();
     uint256 tokens = finneyAmount.mul(100).div(100 - discountPercents).div(finneyPerToken);
+    tokens = tokens * 1 ether;
 
     require(tokens > 0);
 
@@ -123,6 +124,7 @@ contract Crowdsale {
       
     isICOStarted = true;
     icoEndTime = _icoEndTime;
+    icoStartTime = now;
   }
 
   function forwardFunds() internal {

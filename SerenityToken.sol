@@ -37,10 +37,12 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
     balanceOf[fundingWallet] = maxSaleToken;
     balanceOf[0x47c8F28e6056374aBA3DF0854306c2556B104601] = maxSaleToken;
     balanceOf[0xCAD0AfB8Ec657D0DB9518B930855534f6433360f] = maxSaleToken;
+    balanceOf[0x041375343c3Bd1Bb28b40b5Ce7b4665A9a6e21D0] = maxSaleToken;
 
     fundingWallets[fundingWallet] = true;
     fundingWallets[0x47c8F28e6056374aBA3DF0854306c2556B104601] = true;
     fundingWallets[0xCAD0AfB8Ec657D0DB9518B930855534f6433360f] = true;
+    fundingWallets[0x041375343c3Bd1Bb28b40b5Ce7b4665A9a6e21D0] = true;
   }
 
   modifier validAddress(address _address) {
@@ -75,6 +77,7 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
     result = result.add(maxSaleToken.sub(balanceOf[fundingWallet]));
     result = result.add(maxSaleToken.sub(balanceOf[0x47c8F28e6056374aBA3DF0854306c2556B104601]));
     result = result.add(maxSaleToken.sub(balanceOf[0xCAD0AfB8Ec657D0DB9518B930855534f6433360f]));
+    result = result.add(maxSaleToken.sub(balanceOf[0x041375343c3Bd1Bb28b40b5Ce7b4665A9a6e21D0]));
     return result;
   }
 
@@ -88,6 +91,7 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
     // Zeroing a cold wallet.
     balanceOf[fundingWallet] = 0;
     balanceOf[0xCAD0AfB8Ec657D0DB9518B930855534f6433360f] = 0;
+    balanceOf[0x041375343c3Bd1Bb28b40b5Ce7b4665A9a6e21D0] = 0;
 
     // Shareholders/bounties
     balanceOf[0x47c8F28e6056374aBA3DF0854306c2556B104601] = totalProjectToken;

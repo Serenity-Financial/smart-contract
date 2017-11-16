@@ -100,18 +100,15 @@ contract Crowdsale {
   function buyTokens(address beneficiary) public validAddress(beneficiary) payable {
     require(validPurchase());
 
-    uint256 finneyAmount = msg.value / 1 finney;
-
     uint8 discountPercents = getDiscount();
-    uint256 tokens = finneyAmount.mul(100).div(100 - discountPercents).div(finneyPerToken);
-    tokens = tokens * 1 ether;
+    uint256 tokens = msg.value.mul(100).div(100 - discountPercents).mul(10);
 
-    require(tokens > 0);
+    require(tokens > 1 ether);
 
-    weiRaised = weiRaised.add(finneyAmount * 1 finney);
+    weiRaised = weiRaised.add(msg.value);
     
     token.autoTransfer(beneficiary, tokens);
-    TokenPurchase(msg.sender, beneficiary, finneyAmount * 1 finney, tokens);
+    TokenPurchase(msg.sender, beneficiary, msg.value, tokens);
 
     forwardFunds();
   }

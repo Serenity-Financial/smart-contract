@@ -45,6 +45,8 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
     fundingWallet = msg.sender; 
 
     balanceOf[fundingWallet] = maxSaleToken;
+    balanceOf[0x47c8F28e6056374aBA3DF0854306c2556B104601] = maxSaleToken;
+    balanceOf[0xCAD0AfB8Ec657D0DB9518B930855534f6433360f] = maxSaleToken;
 
     fundingWallets[fundingWallet] = true;
     fundingWallets[0x47c8F28e6056374aBA3DF0854306c2556B104601] = true;

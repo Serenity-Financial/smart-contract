@@ -81,7 +81,7 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
   function finalize() external onlyOwner {
     require(fundingEnabled);
     
-    totalSoldTokens = maxSaleToken.sub(balanceOf[fundingWallet]);
+    totalSoldTokens = getTotalSoldTokens();
 
     totalProjectToken = totalSoldTokens.mul(15).div(100);
 

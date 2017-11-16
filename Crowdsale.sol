@@ -127,6 +127,10 @@ contract Crowdsale {
     wallet.transfer(msg.value);
   }
 
+  function finalize() onlyOwner public {
+    token.finalize();
+  }
+
   function validPurchase() internal constant returns (bool) {
     bool withinPresalePeriod = now >= preStartTime && now <= preEndTime;
     bool withinICOPeriod = isICOStarted && now >= icoStartTime && now <= icoEndTime;

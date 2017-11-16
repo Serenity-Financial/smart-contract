@@ -20,9 +20,9 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
  
   address public fundingWallet;
   bool public fundingEnabled = true;
-  uint256 public maxSaleToken = 3500000;
-  uint256 public initialSupply = 350000 ether;
-  uint256 public totalSoldTokens;
+  uint256 public maxSaleToken = 3500000 ether;
+  uint256 public initialSupply = 3500000 ether;
+  uint256 public totalSoldTokens = 0;
   uint256 public totalProjectToken;
   uint256 private totalLockToken;
   bool public transfersEnabled = false; 
@@ -45,8 +45,6 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
     fundingWallet = msg.sender; 
 
     balanceOf[fundingWallet] = maxSaleToken;
-    balanceOf[0xCAD0AfB8Ec657D0DB9518B930855534f6433360f] = maxSaleToken;
-    balanceOf[0x47c8F28e6056374aBA3DF0854306c2556B104601] = maxSaleToken;
 
     fundingWallets[fundingWallet] = true;
     fundingWallets[0x47c8F28e6056374aBA3DF0854306c2556B104601] = true;
@@ -73,6 +71,7 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
   }
 
   function autoTransfer(address _to, uint256 _value) public validAddress(_to) onlyOwner returns (bool) {
+    totalSoldTokens = totalSoldTokens + _value;
     return super.transfer(_to, _value);
   }
 
@@ -150,5 +149,12 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
     require(fundingWallets[_address]);
 
     fundingWallets[_address] = false;
+  }
+
+  function enableFundingWallets(address _address) external onlyOwner {
+    require(fundingEnabled);
+    require(fundingWallet != _address);
+
+    fundingWallets[_address] = true;
   }
 }

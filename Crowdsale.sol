@@ -67,19 +67,19 @@ contract Crowdsale {
 
     uint256 totalSold = token.totalSoldTokens();
 
-    if (totalSold < 150000)
+    if (totalSold < 150000 ether)
       return 50;
-    else if (totalSold < 250000)
+    else if (totalSold < 250000 ether)
       return 40;
-    else if (totalSold < 500000)
+    else if (totalSold < 500000 ether)
       return 35;
-    else if (totalSold < 700000)
+    else if (totalSold < 700000 ether)
       return 30;
-    else if (totalSold < 1100000)
+    else if (totalSold < 1100000 ether)
       return 25;
-    else if (totalSold < 2100000)
+    else if (totalSold < 2100000 ether)
       return 20;
-    else if (totalSold < 3500000)
+    else if (totalSold < 3500000 ether)
       return 10;
   }
 

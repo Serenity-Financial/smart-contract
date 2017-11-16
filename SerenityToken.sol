@@ -31,7 +31,7 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
   event Finalize(address indexed _from, uint256 _value);
   event DisableTransfers(address indexed _from);
 
-  function SerenityToken() ERC20Token("SERENITY INVEST", "SERENITY", 18) public {
+  function SerenityToken() ERC20Token("SERENITY", "SERENITY", 18) public {
     fundingWallet = msg.sender; 
 
     balanceOf[fundingWallet] = maxSaleToken;

@@ -98,6 +98,7 @@ contract Crowdsale {
   }
 
   function buyTokens(address beneficiary) public validAddress(beneficiary) payable {
+    require(isICOStarted || token.getTotalSoldTokens() < 150000 ether);
     require(validPurchase());
 
     uint8 discountPercents = getDiscount();

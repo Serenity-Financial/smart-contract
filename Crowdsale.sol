@@ -116,7 +116,7 @@ contract Crowdsale {
     forwardFunds();
   }
 
-  function activeteICO(uint256 _icoEndTime) public {
+  function activateICO(uint256 _icoEndTime) public {
     require(msg.sender == wallet);
     require(_icoEndTime >= now);
     require(_icoEndTime >= preEndTime);

@@ -65,7 +65,7 @@ contract Crowdsale {
     require(icoStartTime < now);
     require(icoEndTime > now);
 
-    uint256 totalSold = token.totalSoldTokens();
+    uint256 totalSold = token.getTotalSoldTokens();
 
     if (totalSold < 150000 ether)
       return 50;
@@ -119,7 +119,6 @@ contract Crowdsale {
   function activateICO(uint256 _icoEndTime) public {
     require(msg.sender == wallet);
     require(_icoEndTime >= now);
-    require(_icoEndTime >= preEndTime);
     require(isICOStarted == false);
       
     isICOStarted = true;

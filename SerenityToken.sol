@@ -71,7 +71,6 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
   }
 
   function autoTransfer(address _to, uint256 _value) public validAddress(_to) onlyOwner returns (bool) {
-    totalSoldTokens = totalSoldTokens + _value;
     return super.transfer(_to, _value);
   }
 
@@ -110,6 +109,14 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
 
     Transfer(this, msg.sender, allocations[msg.sender].value);
     Unlock(this, msg.sender, allocations[msg.sender].value);
+  }
+
+  function getTotalSoldTokens() public constant returns (uint256) {
+    uint256 result = 0;
+    result.add(maxSaleToken.sub(balanceOf[fundingWallet]));
+    result.add(maxSaleToken.sub(balanceOf[0x47c8F28e6056374aBA3DF0854306c2556B104601]));
+    result.add(maxSaleToken.sub(balanceOf[0xCAD0AfB8Ec657D0DB9518B930855534f6433360f]));
+    return result;
   }
 
   function finalize() external onlyOwner {

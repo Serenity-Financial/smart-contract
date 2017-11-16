@@ -127,7 +127,8 @@ contract Crowdsale {
     wallet.transfer(msg.value);
   }
 
-  function finalize() onlyOwner public {
+  function finalize() public {
+    require(msg.sender == wallet);
     token.finalize();
   }
 

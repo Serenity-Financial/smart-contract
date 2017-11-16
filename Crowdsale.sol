@@ -51,7 +51,7 @@ contract Crowdsale {
     buyTokens(msg.sender);
   }
 
-  function getTimeDiscount() internal returns(uint8) {
+  function getTimeDiscount() internal constant returns(uint8) {
     require(isICOStarted == true);
     require(icoStartTime < now);
     require(icoEndTime > now);
@@ -60,7 +60,7 @@ contract Crowdsale {
     return icoWeeksDiscounts[weeksPassed];
   } 
 
-  function getTotalSoldDiscount() internal returns(uint8) {
+  function getTotalSoldDiscount() internal constant returns(uint8) {
     require(isICOStarted == true);
     require(icoStartTime < now);
     require(icoEndTime > now);

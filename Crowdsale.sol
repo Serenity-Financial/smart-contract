@@ -59,9 +59,9 @@ contract Crowdsale {
     require(validPurchase());
 
     uint8 discountPercents = getDiscount();
-    uint256 tokens = msg.value.mul(100).div(100 - discountPercents).mul(10);
+    uint256 tokens = msg.value.mul(100).div(100 - discountPercents).mul(10000);
 
-    require(tokens >= 1 ether);
+    require(tokens >= 100 ether);
 
     token.autoTransfer(beneficiary, tokens);
     TokenPurchase(msg.sender, beneficiary, msg.value, tokens);

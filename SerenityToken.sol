@@ -20,8 +20,8 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
  
   address public fundingWallet;
   bool public fundingEnabled = true;
-  uint256 public maxSaleToken = 3500000 ether;
-  uint256 public initialSupply = 3500000 ether;
+  uint256 public maxSaleToken = 400000000 ether;
+  uint256 public initialSupply = 400000000 ether;
   uint256 public totalSoldTokens = 0;
   uint256 public totalProjectToken;
   bool public transfersEnabled = false;
@@ -31,7 +31,7 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
   event Finalize(address indexed _from, uint256 _value);
   event DisableTransfers(address indexed _from);
 
-  function SerenityToken() ERC20Token("SERENITY", "SERENITY", 18) public {
+  function SerenityToken() ERC20Token("Serenity", "SRNT", 18) public {
     fundingWallet = msg.sender; 
 
     balanceOf[fundingWallet] = maxSaleToken;

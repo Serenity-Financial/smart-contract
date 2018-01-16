@@ -42,6 +42,7 @@ contract ERC20Token is IERC20Token {
   }
 
   function transfer(address _to, uint256 _value) public validAddress(_to) returns (bool) {
+    require(_value <= balanceOf[msg.sender]);
     balanceOf[msg.sender] = balanceOf[msg.sender].sub(_value);
     balanceOf[_to] = balanceOf[_to].add(_value);
     Transfer(msg.sender, _to, _value);
@@ -50,6 +51,8 @@ contract ERC20Token is IERC20Token {
   }
 
   function transferFrom(address _from, address _to, uint256 _value) public validAddress(_to) returns (bool) {
+    require(_value <= allowance[_from][msg.sender]);
+    require(_value <= balanceOf[_from]);
     allowance[_from][msg.sender] = allowance[_from][msg.sender].sub(_value);
     balanceOf[_from] = balanceOf[_from].sub(_value);
     balanceOf[_to] = balanceOf[_to].add(_value);

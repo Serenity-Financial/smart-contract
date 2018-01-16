@@ -1,7 +1,7 @@
 pragma solidity ^0.4.18;
 
 contract IOwned {
-  function owner() public constant returns (address) { owner; }
+  function owner() public view returns (address) { owner; }
   function transferOwnership(address _newOwner) public;
 }
 

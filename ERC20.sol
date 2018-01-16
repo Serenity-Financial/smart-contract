@@ -3,12 +3,12 @@ pragma solidity ^0.4.18;
 import './SafeMath.sol';
 
 contract IERC20Token {
-  function name() public constant returns (string) { name; }
-  function symbol() public constant returns (string) { symbol; }
-  function decimals() public constant returns (uint8) { decimals; }
-  function totalSupply() public constant returns (uint256) { totalSupply; }
-  function balanceOf(address _owner) public constant returns (uint256 balance) { _owner; balance; }
-  function allowance(address _owner, address _spender) public constant returns (uint256 remaining) { _owner; _spender; remaining; }
+  function name() public view returns (string) { name; }
+  function symbol() public view returns (string) { symbol; }
+  function decimals() public view returns (uint8) { decimals; }
+  function totalSupply() public view returns (uint256) { totalSupply; }
+  function balanceOf(address _owner) public view returns (uint256 balance) { _owner; balance; }
+  function allowance(address _owner, address _spender) public view returns (uint256 remaining) { _owner; _spender; remaining; }
 
   function transfer(address _to, uint256 _value) public returns (bool);
   function transferFrom(address _from, address _to, uint256 _value) public returns (bool);

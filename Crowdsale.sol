@@ -45,7 +45,7 @@ contract Crowdsale {
     buyTokens(msg.sender);
   }
 
-  function getDiscount() internal constant returns (uint8) {
+  function getDiscount() internal view returns (uint8) {
     require(isICOStarted == true);
     require(icoStartTime < now);
     require(icoEndTime > now);
@@ -88,7 +88,7 @@ contract Crowdsale {
     token.finalize();
   }
 
-  function validPurchase() internal constant returns (bool) {
+  function validPurchase() internal view returns (bool) {
     bool withinICOPeriod = isICOStarted && now >= icoStartTime && now <= icoEndTime;
 
     bool nonZeroPurchase = msg.value != 0;

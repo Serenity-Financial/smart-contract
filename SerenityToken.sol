@@ -6,13 +6,13 @@ import './Owned.sol';
 
 
 contract ISerenityToken {
-  function initialSupply () public constant returns (uint256) { initialSupply; }
+  function initialSupply () public view returns (uint256) { initialSupply; }
 
-  function totalSoldTokens () public constant returns (uint256) { totalSoldTokens; }
-  function totalProjectToken() public constant returns (uint256) { totalProjectToken; }
+  function totalSoldTokens () public view returns (uint256) { totalSoldTokens; }
+  function totalProjectToken() public view returns (uint256) { totalProjectToken; }
 
-  function fundingEnabled() public constant returns (bool) { fundingEnabled; }
-  function transfersEnabled() public constant returns (bool) { transfersEnabled; }
+  function fundingEnabled() public view returns (bool) { fundingEnabled; }
+  function transfersEnabled() public view returns (bool) { transfersEnabled; }
 }
 
 contract SerenityToken is ISerenityToken, ERC20Token, Owned {
@@ -72,7 +72,7 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
     return super.transferFrom(_from, _to, _value);
   }
 
-  function getTotalSoldTokens() public constant returns (uint256) {
+  function getTotalSoldTokens() public view returns (uint256) {
     uint256 result = 0;
     result = result.add(maxSaleToken.sub(balanceOf[fundingWallet]));
     result = result.add(maxSaleToken.sub(balanceOf[0x47c8F28e6056374aBA3DF0854306c2556B104601]));

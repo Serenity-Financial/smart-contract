@@ -8,7 +8,7 @@ contract Crowdsale {
 
   SerenityToken public token;
 
-  mapping(uint256 => uint8) icoWeeksDiscounts; 
+  mapping(uint256 => uint8) internal icoWeeksDiscounts;
 
   bool public isICOStarted = false; 
   uint256 public icoStartTime; 

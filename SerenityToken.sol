@@ -26,7 +26,7 @@ contract SerenityToken is ISerenityToken, ERC20Token, Owned {
   uint256 public totalProjectToken;
   bool public transfersEnabled = false;
 
-  mapping (address => bool) private fundingWallets;
+  mapping (address => bool) internal fundingWallets;
 
   event Finalize(address indexed _from, uint256 _value);
   event DisableTransfers(address indexed _from);

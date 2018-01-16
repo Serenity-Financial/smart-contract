@@ -50,7 +50,7 @@ contract Crowdsale {
     require(icoStartTime < now);
     require(icoEndTime > now);
 
-    uint256 weeksPassed = (now - icoStartTime) / 7 days;
+    uint256 weeksPassed = now.sub(icoStartTime).div(7 days);
     return icoWeeksDiscounts[weeksPassed];
   } 
 

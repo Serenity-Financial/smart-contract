@@ -43,13 +43,19 @@ contract ERC20Basic {
   event Transfer(address indexed from, address indexed to, uint256 value);
 }
 
+contract SRNTPriceOracleBasic {
+    uint256 public SRNT_per_ETH;
+}
+
 contract Escrow {
     using SafeMath for uint256;
 
     address public party_a;
     address public party_b;
-    address internal serenity_wallet = 0x47c8F28e6056374aBA3DF0854306c2556B104601;
-    ERC20Basic internal SRNT_token = ERC20Basic(0xBC7942054F77b82e8A71aCE170E4B00ebAe67eB6);
+    address constant serenity_wallet = 0x47c8F28e6056374aBA3DF0854306c2556B104601;
+    address constant burn_address = 0x0000000000000000000000000000000000000001;
+    ERC20Basic constant SRNT_token = ERC20Basic(0xBC7942054F77b82e8A71aCE170E4B00ebAe67eB6);
+    SRNTPriceOracleBasic constant SRNT_price_oracle = SRNTPriceOracleBasic(0xae5D95379487d047101C4912BddC6942090E5D17);
 
     uint256 public withdrawal_amount;
     address public withdrawal_address;
@@ -68,16 +74,16 @@ contract Escrow {
         // New deposit - take commission and issue an event
         uint256 fee = msg.value.div(100);
         uint256 srnt_balance = SRNT_token.balanceOf(address(this));
-        uint256 fee_paid_by_srnt = srnt_balance.div(10000);
+        uint256 fee_paid_by_srnt = srnt_balance.div(SRNT_price_oracle.SRNT_per_ETH());
         if (fee_paid_by_srnt < fee) {  // Burn all SRNT, deduct from fee
             if (fee_paid_by_srnt > 0) {
                 fee = fee.sub(fee_paid_by_srnt);
-                SRNT_token.transfer(0x0000000000000000000000000000000000000001, srnt_balance);
+                SRNT_token.transfer(burn_address, srnt_balance);
             }
             serenity_wallet.transfer(fee);
             emit Deposit(msg.value.sub(fee));
-        } else {  // There's more SRNT available then needed. Burn a part of it.
-            SRNT_token.transfer(0x0000000000000000000000000000000000000001, fee.mul(10000));
+        } else {  // There's more SRNT available than needed. Burn a part of it.
+            SRNT_token.transfer(burn_address, fee.mul(SRNT_price_oracle.SRNT_per_ETH()));
             emit Deposit(msg.value);
         }
     }

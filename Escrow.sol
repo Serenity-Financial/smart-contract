@@ -57,13 +57,13 @@ contract Escrow {
     ERC20Basic constant SRNT_token = ERC20Basic(0xBC7942054F77b82e8A71aCE170E4B00ebAe67eB6);
     SRNTPriceOracleBasic constant SRNT_price_oracle = SRNTPriceOracleBasic(0xae5D95379487d047101C4912BddC6942090E5D17);
 
-    uint256 public withdrawal_amount;
-    address public withdrawal_address;
+    uint256 public withdrawal_party_a_gets;
+    uint256 public withdrawal_party_b_gets;
     address public withdrawal_last_voter;
 
     event Deposit(uint256 amount);
-    event WithdrawalRequest(address receiver, address requester, uint256 amount);
-    event Withdrawal(address receiver, uint256 amount);
+    event WithdrawalRequest(address requester, uint256 party_a_gets, uint256 party_b_gets);
+    event Withdrawal(uint256 party_a_gets, uint256 party_b_gets);
 
     constructor (address new_party_a, address new_party_b) public {
         party_a = new_party_a;
@@ -88,25 +88,29 @@ contract Escrow {
         }
     }
 
-    function request_withdrawal(address to, uint256 amount) external {
+    function request_withdrawal(uint256 party_a_gets, uint256 party_b_gets) external {
         require(msg.sender != withdrawal_last_voter);  // You can't vote twice
         require((msg.sender == party_a) || (msg.sender == party_b) || (msg.sender == serenity_wallet));
-        require((to == party_a) || (to == party_b));  // You can't withdraw to some random guy
-        require(amount <= address(this).balance);
+        require(party_a_gets.add(party_b_gets) <= address(this).balance);
 
         withdrawal_last_voter = msg.sender;
 
-        emit WithdrawalRequest(to, msg.sender, amount);
+        emit WithdrawalRequest(msg.sender, party_a_gets, party_b_gets);
 
-        if ((withdrawal_amount == amount) && (withdrawal_address == to)) {  // We have consensus
-            delete withdrawal_amount;
-            delete withdrawal_address;
+        if ((withdrawal_party_a_gets == party_a_gets) && (withdrawal_party_b_gets == party_b_gets)) {  // We have consensus
+            delete withdrawal_party_a_gets;
+            delete withdrawal_party_b_gets;
             delete withdrawal_last_voter;
-            to.transfer(amount);
-            emit Withdrawal(to, amount);
+            if (party_a_gets > 0) {
+                party_a.transfer(party_a_gets);
+            }
+            if (party_b_gets > 0) {
+                party_b.transfer(party_b_gets);
+            }
+            emit Withdrawal(party_a_gets, party_b_gets);
         } else {
-            withdrawal_amount = amount;
-            withdrawal_address = to;
+            withdrawal_party_a_gets = party_a_gets;
+            withdrawal_party_b_gets = party_b_gets;
         }
     }
 
